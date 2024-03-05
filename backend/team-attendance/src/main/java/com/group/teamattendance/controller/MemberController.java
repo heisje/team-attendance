@@ -1,10 +1,12 @@
 package com.group.teamattendance.controller;
 
 import com.group.teamattendance.dto.MemberCreateRequest;
+import com.group.teamattendance.dto.MemberOvertimeResponse;
 import com.group.teamattendance.dto.MemberResponse;
 import com.group.teamattendance.service.MemberService;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -27,5 +29,8 @@ public class MemberController {
         memberService.saveMember(request);
     }
 
-
+    @GetMapping("/overtime")
+    public List<MemberOvertimeResponse> searchOvertimeMembers(@RequestParam LocalDate date) {
+        return memberService.searchOvertimeMembers(date);
+    }
 }

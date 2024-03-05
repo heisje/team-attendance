@@ -6,10 +6,7 @@ import com.group.teamattendance.dto.AttendanceResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,7 +34,7 @@ public class AttendanceService {
         final Integer[] sum = {0};
         List<AttendanceDetail> mapAttendances = attendanceRepository.findByMemberIdAndMonthBetween(memberId, firstDayOfMonth, lastDayOfMonth).stream()
                 .map(at -> {
-                    AttendanceDetail attendanceDetail = new AttendanceDetail(at.getDate(), at.getWorkingMinutes());
+                    AttendanceDetail attendanceDetail = new AttendanceDetail(at.getDate(), at.getWorkingMinutes(), at.isDayOff(), at.getUsingDayOff());
                     sum[0] += at.getWorkingMinutes();
                     return attendanceDetail;
                 })
@@ -72,13 +69,14 @@ public class AttendanceService {
         Duration workingMinutes = Duration.ofHours(0);
 
         for (AttendanceTime at : sortedAttendanceTimeList) {
-            if (at.isGoToWork()) {
+            if (at.getIsGoToWork()) {
                 stack = at.getTime().toLocalTime();
             } else {
                 Duration duration = Duration.between(stack, at.getTime().toLocalTime());
                 workingMinutes = workingMinutes.plus(duration);  // 차이를 sum에 더하기
             }
         }
+
         attendance.updateWorkingMinutes((int) workingMinutes.toMinutes());
         attendanceRepository.save(attendance);
         attendanceTimeRepository.save(attendanceTime);
@@ -88,8 +86,22 @@ public class AttendanceService {
     public void updateDayOff(long memberId, LocalDate date, boolean isDayOff) {
         // 기존에 날짜/맴버 기반 출결 검색
         Member member = memberRepository.findById(memberId).orElseThrow(IllegalArgumentException::new);
+        int daysBetween = Period.between(LocalDate.now(), date).getDays();
+        // System.out.println(Period.between(LocalDate.now(), date).getDays());
+        if (daysBetween < member.getTeam().getDayOffAllowedDuration()) {
+            // TODO: 팀의 연차적용기간이 짧다는 경고문
+            throw new IllegalArgumentException();
+        }
         Attendance attendance = attendanceRepository.findByMemberIdAndDate(memberId, date).orElse(new Attendance(member, date));
 
         attendance.updateDayOff(isDayOff);
+        attendanceRepository.save(attendance);
     }
+
+    @Transactional
+    public void updateUsingDayOff(LocalDate today) {
+        attendanceRepository.updateUsingDayOffForDate(today);
+    }
+
+
 }

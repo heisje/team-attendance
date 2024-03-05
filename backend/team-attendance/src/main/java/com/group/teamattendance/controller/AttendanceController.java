@@ -2,8 +2,8 @@ package com.group.teamattendance.controller;
 
 
 import com.group.teamattendance.dto.AttendanceCreateRequest;
+import com.group.teamattendance.dto.AttendanceDayOffUpdateRequest;
 import com.group.teamattendance.dto.AttendanceResponse;
-import com.group.teamattendance.dto.DayOffUpdateRequest;
 import com.group.teamattendance.service.AttendanceService;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +30,7 @@ public class AttendanceController {
     }
 
     @PutMapping("/day-off")
-    public void updateDayOff(@RequestBody DayOffUpdateRequest dayOffUpdateRequest) {
-        attendanceService.updateDayOff(dayOffUpdateRequest.getMemberId(), dayOffUpdateRequest.getDate(), dayOffUpdateRequest.getIsDayOff());
+    public void updateDayOff(@RequestBody AttendanceDayOffUpdateRequest attendanceDayOffUpdateRequest) {
+        attendanceService.updateDayOff(attendanceDayOffUpdateRequest.getMemberId(), attendanceDayOffUpdateRequest.getDate(), attendanceDayOffUpdateRequest.getIsDayOff());
     }
 }

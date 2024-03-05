@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.time.LocalDate;
 
 @Getter
-public class DayOffUpdateRequest {
+public class AttendanceDayOffUpdateRequest {
     private long memberId;
     private LocalDate date;
     private Boolean isDayOff;

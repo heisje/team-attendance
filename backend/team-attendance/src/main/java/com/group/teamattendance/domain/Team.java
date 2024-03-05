@@ -20,7 +20,11 @@ public class Team {
     @Column(nullable = false, length = 255)     // length 255는 생략가능 (기본)
     private String name;
 
-    private Integer countDayOff;
+    private final Integer dayOffAllowedDuration = 1;
+
+    @OneToOne
+    @JoinColumn(name = "manager_id")
+    private Member manager;
 
     protected Team() {
     }
@@ -34,5 +38,9 @@ public class Team {
 
     public void updateName(String name) {
         this.name = name;
+    }
+
+    public void updateManager(Member manager) {
+        this.manager = manager;
     }
 }

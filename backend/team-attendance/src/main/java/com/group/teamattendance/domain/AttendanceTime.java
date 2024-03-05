@@ -19,7 +19,7 @@ public class AttendanceTime {
 
     private LocalDateTime time;
 
-    private boolean isGoToWork;
+    private Boolean isGoToWork;
 
     public AttendanceTime(LocalDateTime time, boolean isGoToWork) {
         this.time = time;

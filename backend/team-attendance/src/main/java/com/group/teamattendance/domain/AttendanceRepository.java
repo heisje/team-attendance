@@ -1,6 +1,7 @@
 package com.group.teamattendance.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -20,4 +21,11 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
 
     @Query("select a from Attendance a where a.member.id = :memberId")
     List<Attendance> findByMemberId(@Param("memberId") Long memberId);
+
+    @Modifying
+    @Query("update Attendance a set a.usingDayOff = true where a.date <= :date and a.dayOff = true")
+    void updateUsingDayOffForDate(@Param("date") LocalDate date);
+
+    @Query("SELECT a from Attendance a where :firstDayOfMonth <= a.date and a.date <= :lastDayOfMonth")
+    List<Attendance> findAllByBetweenMonth(@Param("firstDayOfMonth") LocalDate firstDayOfMonth, @Param("lastDayOfMonth") LocalDate lastDayOfMonth);
 }
