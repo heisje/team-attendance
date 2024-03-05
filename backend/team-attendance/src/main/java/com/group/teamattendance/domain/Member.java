@@ -31,7 +31,7 @@ public class Member {
     @Column(nullable = true)
     LocalDate workStartDate;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<Attendance> attendances = new ArrayList<>();
 
     protected Member() {
