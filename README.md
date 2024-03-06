@@ -41,7 +41,7 @@ TODO: 연차 조회
 
 ## 1. 팀 등록기능
 
-```json
+```http
 POST /api/v1/team HTTP/1.1
 Host: localhost:8080
 Content-Type: application/json
@@ -56,7 +56,7 @@ Content-Length: 21
 
 ## 2. 팀 전체 조회
 
-```json
+```http
 GET /api/v1/team HTTP/1.1
 Host: localhost:8080
 ```
@@ -65,7 +65,7 @@ Host: localhost:8080
 
 ## 3. 팀이름 변경(요구 사항 외)
 
-```json
+```http
 PUT /api/v1/team HTTP/1.1
 Host: localhost:8080
 Content-Type: application/json
@@ -81,7 +81,7 @@ Content-Length: 47
 
 맴버를 등록할 수 있다. role = “MAMAGER”일 경우 기존 팀의 매니저를 대치시킨다.
 
-```json
+```http
 POST /api/v1/member HTTP/1.1
 Host: localhost:8080
 Content-Type: application/json
@@ -100,7 +100,7 @@ Content-Length: 135
 
 ## 5. 맴버 조회
 
-```xml
+```http
 GET /api/v1/member HTTP/1.1
 Host: localhost:8080
 ```
@@ -119,7 +119,7 @@ Host: localhost:8080
 
 라고 생각했지만, 로직이 복잡해져 더 쉬운방법이 없을까 고민하고 있다.
 
-```xml
+```http
 POST /api/v1/attendance HTTP/1.1
 Host: localhost:8080
 Content-Type: application/json
@@ -140,7 +140,7 @@ Content-Length: 81
 
 `usingDayOff`는 스케줄링으로 날짜가 지난 것을 일괄 변경한 것을 참조한다.
 
-```xml
+```http
 GET /api/v1/attendance?memberId=1&date=2024-03-01 HTTP/1.1
 Host: localhost:8080
 ```
@@ -151,7 +151,7 @@ Host: localhost:8080
 
 휴가를 작성한다. 팀내에 휴가 허용 범위(`Integer dayOffAllowedDuration`)을 두고 체크한다.
 
-```xml
+```http
 PUT /api/v1/attendance/day-off HTTP/1.1
 Host: localhost:8080
 Content-Type: application/json
@@ -170,7 +170,7 @@ Content-Length: 69
 
 초과 근무 시간은 아직 구현하지 못했다.
 
-```xml
+```http
 GET /api/v1/member/overtime?date=2024-03-01 HTTP/1.1
 Host: localhost:8080
 ```
