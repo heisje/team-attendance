@@ -1,5 +1,6 @@
 package com.group.teamattendance.domain;
 
+import com.group.teamattendance.common.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -41,6 +42,10 @@ public class Team {
     }
 
     public void updateManager(Member manager) {
+        if (this.manager != null) {
+            this.manager.updateRole(Role.MEMBER);
+        }
         this.manager = manager;
+        manager.updateRole(Role.MANAGER);
     }
 }

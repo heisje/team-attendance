@@ -1,5 +1,6 @@
 package com.group.teamattendance.domain;
 
+import com.group.teamattendance.common.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -23,7 +24,7 @@ public class Member {
     String name;
 
     @Column
-    boolean role;
+    boolean role = false;
 
     @Column(nullable = true)
     LocalDate birthday;
@@ -53,5 +54,14 @@ public class Member {
 
     public boolean getRole() {
         return this.role;
+    }
+
+    public void updateRole(Role role) {
+        if (role == Role.MEMBER) {
+            this.role = false;
+        }
+        if (role == Role.MANAGER) {
+            this.role = true;
+        }
     }
 }
